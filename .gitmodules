@@ -1,3 +1,6 @@
 [submodule "word2vec-kor"]
 	path = word2vec-kor
 	url = https://github.com/kkb2849/word2vec-kor.git
+[submodule "cnn-sentence-classification"]
+	path = cnn-sentence-classification
+	url = https://github.com/kkb2849/cnn-sentence-classification.git
