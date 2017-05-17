@@ -1,0 +1,1 @@
+python translate.py --decode --data_dir=data --from_train_data=data/train/namuwiki_chosung.txt --to_train_data=data/train/namuwiki_sentences.txt --from_dev_data=data/dev/namuwiki_chosung_dev.txt --to_dev_data=data/dev/namuwiki_sentences_dev.txt --train_dir=data/ckpt --from_vocab_size=10000 --to_vocab_size=10000 --steps_per_checkpoint=10

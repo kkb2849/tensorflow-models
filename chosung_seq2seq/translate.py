@@ -78,7 +78,7 @@ FLAGS = tf.app.flags.FLAGS
 
 # We use a number of buckets and pad to the closest one for efficiency.
 # See seq2seq_model.Seq2SeqModel for details of how they work.
-_buckets = [(5, 10), (10, 15), (20, 25), (40, 50)]
+_buckets = [(10, 10), (25, 25), (50, 50), (70, 70)]
 
 
 def read_data(source_path, target_path, max_size=None):
@@ -165,7 +165,8 @@ def train():
         from_dev_data,
         to_dev_data,
         FLAGS.from_vocab_size,
-        FLAGS.to_vocab_size)
+        FLAGS.to_vocab_size,
+        data_utils.char_tokenizer)
   else:
       # Prepare WMT data.
       print("Preparing WMT data in %s" % FLAGS.data_dir)
@@ -195,7 +196,7 @@ def train():
     step_time, loss = 0.0, 0.0
     current_step = 0
     previous_losses = []
-    while current_step < 100:
+    while current_step < 100000:
       # Choose a bucket according to data distribution. We pick a random number
       # in [0, 1] and use the corresponding interval in train_buckets_scale.
       random_number_01 = np.random.random_sample()
