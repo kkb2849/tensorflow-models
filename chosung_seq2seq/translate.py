@@ -80,7 +80,6 @@ FLAGS = tf.app.flags.FLAGS
 # See seq2seq_model.Seq2SeqModel for details of how they work.
 _buckets = [(10, 10), (25, 25), (50, 50), (70, 70)]
 
-
 def read_data(source_path, target_path, max_size=None):
   """Read data from source and target files and put into buckets.
 
@@ -143,6 +142,34 @@ def create_model(session, forward_only):
     session.run(tf.global_variables_initializer())
   return model
 
+def prepare_data():
+  from_train = None
+  to_train = None
+  from_dev = None
+  to_dev = None
+  if FLAGS.from_train_data and FLAGS.to_train_data:
+    from_train_data = FLAGS.from_train_data
+    to_train_data = FLAGS.to_train_data
+    from_dev_data = from_train_data
+    to_dev_data = to_train_data
+    if FLAGS.from_dev_data and FLAGS.to_dev_data:
+      from_dev_data = FLAGS.from_dev_data
+      to_dev_data = FLAGS.to_dev_data
+    from_train, to_train, from_dev, to_dev, _, _ = data_utils.prepare_data(
+        FLAGS.data_dir,
+        from_train_data,
+        to_train_data,
+        from_dev_data,
+        to_dev_data,
+        FLAGS.from_vocab_size,
+        FLAGS.to_vocab_size,
+        data_utils.char_tokenizer)
+  else:
+      # Prepare WMT data.
+      print("Preparing WMT data in %s" % FLAGS.data_dir)
+      from_train, to_train, from_dev, to_dev, _, _ = data_utils.prepare_wmt_data(
+          FLAGS.data_dir, FLAGS.from_vocab_size, FLAGS.to_vocab_size)
+  return from_train, to_train, from_dev, to_dev
 
 def train():
   """Train a en->fr translation model using WMT data."""
